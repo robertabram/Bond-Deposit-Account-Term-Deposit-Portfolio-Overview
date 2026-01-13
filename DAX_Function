@@ -1,0 +1,21 @@
+<--Filter of Targets-->
+Targets = 
+var filtered_entity = ISFILTERED(BONDS[ENTITY])
+var filtered_entity_type = ISFILTERED(BONDS[ENTITY_TYPE])
+var filtered_accounts = ISFILTERED(BONDS[ACCOUNTS])
+var filtered_branch = ISFILTERED(BONDS[BRANCH_NAME])
+
+return
+        SWITCH(
+            TRUE(),
+            filtered_entity  && SELECTEDVALUE(BONDS[ENTITY]) = "Corporate",0,
+            filtered_entity && SELECTEDVALUE(BONDS[ENTITY_TYPE]) = "Individual" && filtered_accounts && SELECTEDVALUE(BONDS[ACCOUNTS]) = "Demand Deposits",[Demand Ind Target Updated],
+            filtered_entity && SELECTEDVALUE(BONDS[ENTITY_TYPE]) = "Legal" && filtered_accounts && SELECTEDVALUE(BONDS[ACCOUNTS]) = "Demand Deposits",[Demand Leg Target Updated],
+            filtered_entity && SELECTEDVALUE(BONDS[ENTITY_TYPE]) = "Individual" && filtered_accounts && SELECTEDVALUE(BONDS[ACCOUNTS]) = "Time Deposits",[Time Ind Target Updated],
+            filtered_entity && SELECTEDVALUE(BONDS[ENTITY_TYPE]) = "Legal" && filtered_accounts && SELECTEDVALUE(BONDS[ACCOUNTS]) = "Time Deposits",[Time Leg Target Updated],
+            filtered_entity && SELECTEDVALUE(BONDS[ENTITY_TYPE]) = "Individual" && filtered_accounts && SELECTEDVALUE(BONDS[ACCOUNTS]) = "Bonds",[Bonds Target Updated],
+            filtered_entity && SELECTEDVALUE(BONDS[ENTITY_TYPE]) = "Legal" && filtered_accounts && SELECTEDVALUE(BONDS[ACCOUNTS]) = "Bonds",[Bonds Target Updated],
+            filtered_entity && VALUES(BONDS[ENTITY]) = "Retail" && filtered_accounts && VALUES(BONDS[ACCOUNTS]) = "Bonds",[Bonds Target Updated],
+            filtered_entity && VALUES(BONDS[ENTITY]) = "Retail" && filtered_accounts && VALUES(BONDS[ACCOUNTS]) = "Time Deposits",[Time Target Updated],
+            filtered_entity && VALUES(BONDS[ENTITY]) = "Retail" && filtered_accounts && VALUES(BONDS[ACCOUNTS]) = "Demand Deposits",[Demand Target Updated],BLANK()
+        )
